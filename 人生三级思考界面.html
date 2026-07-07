@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>如何过好自己的一生｜温馨思考界面</title>
+  <style>
+    :root {
+      --bg1: #fff7ed;
+      --bg2: #fef3c7;
+      --bg3: #fde68a;
+      --ink: #3f2f25;
+      --muted: #7c6a5b;
+      --card: rgba(255,255,255,.72);
+      --card-strong: rgba(255,255,255,.88);
+      --brand: #f59e0b;
+      --rose: #fb7185;
+      --mint: #6ee7b7;
+      --sky: #93c5fd;
+      --lav: #c4b5fd;
+      --shadow: 0 22px 70px rgba(120, 72, 18, .16);
+      --border: rgba(120, 72, 18, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(251, 113, 133, .25), transparent 28%),
+        radial-gradient(circle at 88% 16%, rgba(147, 197, 253, .28), transparent 28%),
+        radial-gradient(circle at 72% 82%, rgba(110, 231, 183, .22), transparent 32%),
+        linear-gradient(135deg, var(--bg1), var(--bg2) 45%, #fff 100%);
+      overflow-x: hidden;
+    }
+
+    .decor, .decor::before, .decor::after {
+      position: fixed;
+      content: "";
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(.2px);
+    }
+    .decor {
+      width: 18rem; height: 18rem;
+      left: -5rem; top: 12rem;
+      background: rgba(251, 113, 133, .12);
+      animation: float 9s ease-in-out infinite;
+    }
+    .decor::before {
+      width: 10rem; height: 10rem;
+      right: -72vw; top: -8rem;
+      background: rgba(147, 197, 253, .18);
+      animation: float 12s ease-in-out infinite reverse;
+    }
+    .decor::after {
+      width: 8rem; height: 8rem;
+      right: -55vw; top: 35rem;
+      background: rgba(110, 231, 183, .18);
+      animation: float 10s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-24px) rotate(7deg); }
+    }
+
+    .petal {
+      position: fixed;
+      top: -4rem;
+      width: 10px;
+      height: 16px;
+      background: rgba(251, 113, 133, .38);
+      border-radius: 10px 2px 10px 2px;
+      z-index: 1;
+      pointer-events: none;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      from { transform: translate3d(0,-5vh,0) rotate(0deg); opacity: 0; }
+      10% { opacity: .9; }
+      to { transform: translate3d(var(--drift),105vh,0) rotate(360deg); opacity: 0; }
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 2;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    header.hero {
+      min-height: 78vh;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255,255,255,.62);
+      box-shadow: 0 8px 30px rgba(120,72,18,.08);
+      color: #8a5a11;
+      font-weight: 700;
+      animation: fadeUp .8s ease both;
+    }
+
+    h1 {
+      margin: 22px 0 18px;
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: .98;
+      letter-spacing: -0.06em;
+      animation: fadeUp .9s ease .08s both;
+    }
+    h1 span {
+      background: linear-gradient(90deg, #e11d48, #f59e0b, #0f766e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lead {
+      max-width: 680px;
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.85;
+      color: var(--muted);
+      animation: fadeUp 1s ease .16s both;
+    }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+      animation: fadeUp 1s ease .24s both;
+    }
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, #fb7185, #f59e0b);
+      box-shadow: 0 14px 34px rgba(245, 158, 11, .28);
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 18px 42px rgba(245,158,11,.36); }
+    .btn.secondary {
+      color: var(--ink);
+      background: rgba(255,255,255,.76);
+      border: 1px solid var(--border);
+      box-shadow: 0 14px 34px rgba(120,72,18,.1);
+    }
+
+    .life-card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      border-radius: 36px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      animation: fadeInScale .9s ease .16s both, breathe 5s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .orbit {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+    }
+    .core {
+      width: 55%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      background: radial-gradient(circle, #fff, #fffbeb 62%, #fde68a);
+      box-shadow: inset 0 0 0 1px rgba(120,72,18,.08), 0 28px 50px rgba(245,158,11,.22);
+      font-weight: 900;
+      font-size: clamp(20px, 3vw, 34px);
+    }
+    .planet {
+      position: absolute;
+      width: 92px;
+      min-height: 92px;
+      border-radius: 26px;
+      padding: 12px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      background: var(--card-strong);
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 38px rgba(120,72,18,.12);
+      animation: wiggle 4s ease-in-out infinite;
+    }
+    .planet:nth-child(2) { top: 3%; left: 37%; background: #fff1f2; }
+    .planet:nth-child(3) { top: 26%; right: 2%; background: #eff6ff; animation-delay: .4s; }
+    .planet:nth-child(4) { bottom: 10%; right: 12%; background: #ecfdf5; animation-delay: .8s; }
+    .planet:nth-child(5) { bottom: 10%; left: 10%; background: #faf5ff; animation-delay: 1.2s; }
+    .planet:nth-child(6) { top: 28%; left: 0; background: #fffbeb; animation-delay: 1.6s; }
+    @keyframes wiggle {
+      0%,100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 66px auto 28px;
+      max-width: 760px;
+    }
+    .section-title h2 {
+      font-size: clamp(30px, 4vw, 50px);
+      letter-spacing: -0.04em;
+      margin: 0 0 12px;
+    }
+    .section-title p { color: var(--muted); font-size: 17px; line-height: 1.75; }
+
+    .map {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .level {
+      position: relative;
+      padding: 22px;
+      border-radius: 30px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 48px rgba(120,72,18,.1);
+      overflow: hidden;
+      transition: transform .25s ease, background .25s ease;
+    }
+    .level::after {
+      content: "";
+      position: absolute;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      right: -42px; top: -42px;
+      background: rgba(245,158,11,.16);
+    }
+    .level:hover { transform: translateY(-7px); background: rgba(255,255,255,.88); }
+    .level small {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(245,158,11,.14);
+      color: #92400e;
+      font-weight: 900;
+    }
+    .level h3 { font-size: 25px; margin: 16px 0 10px; }
+    .level p { color: var(--muted); line-height: 1.75; margin: 0; }
+
+    .logic {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 22px;
+    }
+    details {
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.68);
+      box-shadow: 0 14px 34px rgba(120,72,18,.08);
+      overflow: hidden;
+      transition: all .25s ease;
+    }
+    details[open] { background: rgba(255,255,255,.9); box-shadow: var(--shadow); }
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-weight: 900;
+      font-size: 22px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .chev { transition: transform .25s ease; color: var(--brand); }
+    details[open] .chev { transform: rotate(90deg); }
+    .detail-body {
+      padding: 0 24px 24px;
+      color: var(--muted);
+      line-height: 1.8;
+      animation: fadeUp .28s ease both;
+    }
+    .subgrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .subcard {
+      border-radius: 22px;
+      padding: 16px;
+      background: #fffaf0;
+      border: 1px solid rgba(120,72,18,.1);
+      color: var(--ink);
+      transition: transform .2s ease;
+    }
+    .subcard:hover { transform: translateY(-4px) rotate(.4deg); }
+    .subcard h4 { margin: 0 0 8px; font-size: 17px; }
+    .subcard p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+    .practice {
+      margin-top: 54px;
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+    .quote, .list-card {
+      border-radius: 34px;
+      padding: 28px;
+      background: var(--card-strong);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .quote {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,247,237,.8));
+    }
+    .quote .mark { font-size: 58px; color: var(--rose); line-height: 1; }
+    .quote p { font-size: 25px; line-height: 1.55; font-weight: 900; margin: 0; }
+    .quote em { margin-top: 16px; color: var(--muted); font-style: normal; }
+    .notebook {
+      display: grid;
+      gap: 12px;
+    }
+    .line {
+      padding: 15px 16px;
+      border-radius: 18px;
+      background: #fffbeb;
+      border: 1px dashed rgba(120,72,18,.2);
+      color: #6b4f3b;
+    }
+    .line b { color: var(--ink); }
+
+    .footer {
+      margin-top: 58px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .75s ease, transform .75s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 920px) {
+      header.hero, .practice { grid-template-columns: 1fr; }
+      .map, .subgrid { grid-template-columns: 1fr; }
+      .orbit { max-width: 520px; margin: 0 auto; }
+    }
+    @media (max-width: 560px) {
+      .planet { width: 78px; min-height: 78px; font-size: 12px; border-radius: 20px; }
+      summary { font-size: 19px; padding: 20px; }
+      .detail-body { padding: 0 20px 20px; }
+      .quote p { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="decor"></div>
+  <main class="wrap">
+    <header class="hero">
+      <section>
+        <div class="badge">🌤️ 人生一级问题 · 温柔但不糊弄</div>
+        <h1>怎样<br/><span>过好自己的一生</span></h1>
+        <p class="lead">答案不是“赢过别人”，而是建立自己的生命评分系统：清醒地选择，真诚地生活，把时间交给真正重要的人和事。</p>
+        <div class="cta-row">
+          <a class="btn" href="#levels">查看三级逻辑</a>
+          <a class="btn secondary" href="#practice">写下不后悔清单</a>
+        </div>
+      </section>
+      <aside class="life-card" aria-label="人生核心关系图">
+        <div class="orbit">
+          <div class="core">自己的<br/>生命标准</div>
+          <div class="planet">健康<br/>底盘</div>
+          <div class="planet">真实<br/>关系</div>
+          <div class="planet">长期<br/>行动</div>
+          <div class="planet">学习<br/>厚度</div>
+          <div class="planet">面对<br/>不确定</div>
+        </div>
+      </aside>
+    </header>
+
+    <section id="levels" class="reveal">
+      <div class="section-title">
+        <h2>一级 · 二级 · 三级的思考路径</h2>
+        <p>先问“标准”，再拆“支柱”，最后落到每天可执行的小动作。别急着冲刺，先确认自己没跑错赛道。</p>
+      </div>
+      <div class="map">
+        <article class="level">
+          <small>一级界面</small>
+          <h3>生命总问题</h3>
+          <p>我正在用什么标准判断自己过得好不好？如果没人羡慕，我还想要这种生活吗？</p>
+        </article>
+        <article class="level">
+          <small>二级界面</small>
+          <h3>五个支柱</h3>
+          <p>健康、关系、长期主义、学习、不确定性。它们决定人生能不能稳稳地走远。</p>
+        </article>
+        <article class="level">
+          <small>三级界面</small>
+          <h3>每日行动</h3>
+          <p>睡够、运动、表达爱、持续学习、定期复盘、及时调整。大人生靠小动作堆出来。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="logic reveal" aria-label="可展开的逻辑说明">
+      <details open>
+        <summary><span>一级界面：最容易被忽视的问题</span><span class="chev">›</span></summary>
+        <div class="detail-body">
+          <p><strong>核心问题：</strong>我到底在为什么而活？更准确地说：我是否在用自己的标准生活，还是在执行别人塞给我的评分系统？</p>
+          <div class="subgrid">
+            <div class="subcard"><h4>不要只问“我要什么”</h4><p>还要问“我为什么想要它”。否则很容易把观众的掌声误认为自己的幸福。</p></div>
+            <div class="subcard"><h4>区分拥有与成为</h4><p>拥有更多东西，不等于成为更喜欢的自己。人生不是购物车，是人格工程。</p></div>
+            <div class="subcard"><h4>校准内在标准</h4><p>真正长期有效的标准，是你独处时也认可、回头看也不羞愧的东西。</p></div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary><span>二级界面：过好一生的五个支柱</span><span class="chev">›</span></summary>
+        <div class="detail-body">
+          <p>过好一生不是打一场漂亮仗，而是经营一个长期系统。它需要底盘、关系、方向、厚度和韧性。</p>
+          <div class="subgrid">
+            <div class="subcard"><h4>健康</h4><p>睡眠、运动、压力管理，是一切梦想的底盘。身体账单会延迟，但不会忘记。</p></div>
+            <div class="subcard"><h4>关系</h4><p>珍惜那些让你不用表演的人。好关系不是消耗，而是让人更完整。</p></div>
+            <div class="subcard"><h4>长期主义</h4><p>为了重要的东西延迟满足，但不要把当下全部牺牲成“未来的祭品”。</p></div>
+            <div class="subcard"><h4>学习</h4><p>不仅学有用的技能，也学文学、历史、艺术与人的复杂性，保留感受力。</p></div>
+            <div class="subcard"><h4>不确定性</h4><p>人生没有绝对正确路线。做有限信息下的负责选择，然后边走边修正。</p></div>
+            <div class="subcard"><h4>勇气</h4><p>很多后悔不是来自选错，而是来自因为害怕而一直不选。</p></div>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary><span>三级界面：可以马上开始的小行动</span><span class="chev">›</span></summary>
+        <div class="detail-body">
+          <p>宏大的人生问题，需要落到朴素动作里。别试图“一键重启人生”，先每天少一点失控，多一点清醒。</p>
+          <div class="subgrid">
+            <div class="subcard"><h4>每日</h4><p>睡够一点，动一动身体，少刷一点噪音，给真正重要的人一点回应。</p></div>
+            <div class="subcard"><h4>每周</h4><p>复盘一次：这周时间花在哪里？哪些事让我更像自己？哪些事只是惯性？</p></div>
+            <div class="subcard"><h4>每月</h4><p>做一次“人生账本”：健康、关系、成长、自由、快乐，哪一项正在透支？</p></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section id="practice" class="practice reveal">
+      <div class="quote">
+        <div class="mark">“</div>
+        <p>别活成别人眼里的优秀样品，要活成自己心里认可的人。</p>
+        <em>人生不是公开排名赛，是私人长期项目。</em>
+      </div>
+      <div class="list-card">
+        <h2 style="margin-top:0">人生不后悔清单</h2>
+        <div class="notebook">
+          <div class="line"><b>1.</b> 我这一生最不想辜负的是：__________</div>
+          <div class="line"><b>2.</b> 我真正羡慕的生活状态是：__________</div>
+          <div class="line"><b>3.</b> 如果不考虑别人评价，我最想成为：__________</div>
+          <div class="line"><b>4.</b> 我愿意长期投入的事情是：__________</div>
+          <div class="line"><b>5.</b> 临终前我最不希望后悔的是：__________</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer reveal">
+      <p>在混乱里保持一点清醒，在疲惫里保留一点热爱。<br/>这不一定闪闪发光，但已经很了不起。</p>
+    </footer>
+  </main>
+
+  <script>
+    const petalColors = ['rgba(251,113,133,.38)', 'rgba(245,158,11,.32)', 'rgba(196,181,253,.32)', 'rgba(110,231,183,.28)'];
+    for (let i = 0; i < 22; i++) {
+      const p = document.createElement('i');
+      p.className = 'petal';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (8 + Math.random() * 9) + 's';
+      p.style.animationDelay = (-Math.random() * 12) + 's';
+      p.style.setProperty('--drift', (Math.random() * 140 - 70) + 'px');
+      p.style.background = petalColors[Math.floor(Math.random() * petalColors.length)];
+      p.style.transform = `scale(${0.65 + Math.random() * 0.9})`;
+      document.body.appendChild(p);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
